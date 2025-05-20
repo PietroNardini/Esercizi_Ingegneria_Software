@@ -1,4 +1,5 @@
-package EsempioEsame;
+package main.java.esempioesame;
+import main.java.esempioesame.*;
 
 public class Sviluppatore extends Dipendente{
     private String matricola;
@@ -14,7 +15,7 @@ public class Sviluppatore extends Dipendente{
 
     @Override
     public double calcolaPaga() {
-        System.out.println("Calcolo paga");
+        System.out.println("Calcolo paga ....");
         return 2000;
     }
 

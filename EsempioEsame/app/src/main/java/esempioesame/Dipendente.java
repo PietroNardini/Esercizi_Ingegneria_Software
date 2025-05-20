@@ -1,5 +1,5 @@
-package EsempioEsame;
-
+package main.java.esempioesame;
+import main.java.esempioesame.*;
 public abstract class Dipendente implements Lavoratore, Pagabile{
     String nome;
     public Dipendente(String nome){

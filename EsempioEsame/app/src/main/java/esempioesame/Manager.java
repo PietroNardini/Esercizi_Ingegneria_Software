@@ -1,4 +1,5 @@
-package EsempioEsame;
+package main.java.esempioesame;
+import main.java.esempioesame.*;
 
 public class Manager extends Dipendente{
     private String mobile;
@@ -14,7 +15,7 @@ public class Manager extends Dipendente{
 
     @Override
     public double calcolaPaga() {
-        System.out.println("Calcolo paga");
+        System.out.println("Calcolo paga ....");
         return 3000;
     }
 
