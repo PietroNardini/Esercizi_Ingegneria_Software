@@ -1,0 +1,3 @@
+[2025-05-20 12:22:21] Applicazione avviata.
+[2025-05-20 12:22:21] Utente ha eseguito il login.
+[2025-05-20 12:22:21] Operazione completata con successo.

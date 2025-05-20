@@ -1,10 +1,17 @@
 package com.example.Esercizi.ingsw;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -32,6 +39,29 @@ import com.example.Esercizi.ingsw.esercizio20.VoceDiario;
 import com.example.Esercizi.ingsw.esercizio21.Film;
 import com.example.Esercizi.ingsw.esercizio21.Prenotazione;
 import com.example.Esercizi.ingsw.esercizio21.Sala;
+import com.example.Esercizi.ingsw.esercizio22.Spedibile;
+import com.example.Esercizi.ingsw.esercizio23.Medico;
+import com.example.Esercizi.ingsw.esercizio23.Paziente;
+import com.example.Esercizi.ingsw.esercizio23.Visita;
+import com.example.Esercizi.ingsw.esercizio24.Catalogo;
+import com.example.Esercizi.ingsw.esercizio22.OrdineNegozio;
+import com.example.Esercizi.ingsw.esercizio22.OrdineOnline;
+import com.example.Esercizi.ingsw.esercizio24.Prodottoes24 ;
+import com.example.Esercizi.ingsw.esercizio25.ContoBancario;
+import com.example.Esercizi.ingsw.esercizio25.ContoCorrente;
+import com.example.Esercizi.ingsw.esercizio25.ContoRisparmio;
+import com.example.Esercizi.ingsw.esercizio26.StudenteDaFile;
+import com.example.Esercizi.ingsw.esercizio27.PersonaJson;
+import com.example.Esercizi.ingsw.esercizio28.Alimentare;
+import com.example.Esercizi.ingsw.esercizio28.Elettronico;
+import com.example.Esercizi.ingsw.esercizio28.ProdottoMagazzino;
+import com.example.Esercizi.ingsw.esercizio29.Canzone;
+import com.example.Esercizi.ingsw.esercizio30.Contatto;
+import com.example.Esercizi.ingsw.esercizio32.Logger;
+import com.example.Esercizi.ingsw.esercizio33.AutoEs33;
+import com.example.Esercizi.ingsw.esercizio33.Parcheggio;
+import com.example.Esercizi.ingsw.esercizio34.SquadraNazionale;
+import com.example.Esercizi.ingsw.esercizio35.Giocatore;
 
 @SpringBootApplication
 public class EserciziIngswApplication {
@@ -418,99 +448,374 @@ public class EserciziIngswApplication {
 		// Classi OrdineOnline e OrdineNegozio la implementano in modo diverso.
 		// Nel main, gestisci una lista mista di ordini e stampa il metodo di spedizione per ciascuno.
 		public static void esercizio22() {
-			
+				ArrayList<Spedibile> ordini = new ArrayList<>();
+
+				// Aggiunta di ordini misti
+				ordini.add(new OrdineOnline("ON123"));
+				ordini.add(new OrdineNegozio("NG456"));
+				ordini.add(new OrdineOnline("ON789"));
+				ordini.add(new OrdineNegozio("NG012"));
+
+				for (Spedibile ordine : ordini) {
+					ordine.spedizione();
+				}
 		}
 
 		// 23. Registro Medico (Classi + ArrayList + Ricerca Avanzata)
 		// Crea classi Paziente, Visita e Medico.
 		// Nel main, inserisci dati e permetti la ricerca delle visite per un paziente specifico.
 		public static void esercizio23() {
-			
+					Scanner scanner = new Scanner(System.in);
+
+					ArrayList<Visita> visite = new ArrayList<>();
+
+					Paziente p1 = new Paziente("Mario Rossi", "RSSMRA80A01H501U");
+					Paziente p2 = new Paziente("Laura Bianchi", "BNCLRA85C41F205Z");
+
+					Medico m1 = new Medico("Dott. Verdi", "Cardiologia");
+					Medico m2 = new Medico("Dott.ssa Neri", "Dermatologia");
+
+					visite.add(new Visita(p1, m1, "2025-04-01", "Controllo annuale"));
+					visite.add(new Visita(p2, m2, "2025-04-10", "Allergia cutanea"));
+					visite.add(new Visita(p1, m2, "2025-05-05", "Visita dermatologica"));
+
+					System.out.print("Inserisci codice fiscale del paziente: ");
+					String cfRicerca = scanner.nextLine();
+
+					System.out.println("\nVisite trovate:");
+					boolean trovata = false;
+					for (Visita v : visite) {
+						if (v.getPaziente().getCodiceFiscale().equalsIgnoreCase(cfRicerca)) {
+							System.out.println(v.getDettagli());
+							trovata = true;
+						}
+					}
+
+					if (!trovata) {
+						System.out.println("Nessuna visita trovata per il paziente con CF: " + cfRicerca);
+					}
+
+					scanner.close();
+    
 		}
 
 		// 24. Gestione Catalogo Prodotti con Filtri (Generics + Funzioni + Filtri)
 		// Crea una classe generica Catalogo<T> che permette di aggiungere e filtrare prodotti tramite Predicate<T>.
 		// Nel main, filtra prodotti per prezzo, nome, o disponibilità.
 		public static void esercizio24() {
-			
-		}
+			 Catalogo<Prodottoes24> catalogo = new Catalogo<>();
+
+        // Aggiunta prodotti di esempio
+        catalogo.aggiungi(new Prodottoes24("Laptop", 999.99, true));
+        catalogo.aggiungi(new Prodottoes24("Mouse", 19.99, true));
+        catalogo.aggiungi(new Prodottoes24("Stampante", 89.90, false));
+        catalogo.aggiungi(new Prodottoes24("Monitor", 150.00, true));
+        catalogo.aggiungi(new Prodottoes24("Tastiera", 29.90, false));
+
+        // Filtro: prezzo < 100
+        System.out.println("Prodotti sotto i 100 euro:");
+        List<Prodottoes24> economici = catalogo.filtra(p -> p.getPrezzo() < 100);
+        economici.forEach(System.out::println);
+
+        // Filtro: disponibili
+        System.out.println("\nProdotti disponibili:");
+        List<Prodottoes24> disponibili = catalogo.filtra(Prodottoes24::isDisponibile);
+        disponibili.forEach(System.out::println);
+
+        // Filtro: nome contiene 'top'
+        System.out.println("\nProdotti con nome che contiene 'top':");
+        List<Prodottoes24> conNome = catalogo.filtra(p -> p.getNome().toLowerCase().contains("top"));
+        conNome.forEach(System.out::println);
+    }
+		
 
 		// 25. Sistema Banca (Classi astratte + Ereditarietà + Overriding)
 		// Classe astratta ContoBancario, sottoclassi ContoCorrente, ContoRisparmio.
 		// Ogni tipo ha un metodo calcolaInteresse() diverso.
 		// Nel main, calcola l’interesse per una lista di conti.
 		public static void esercizio25() {
-			
+			List<ContoBancario> conti = new ArrayList<>();
+			conti.add(new ContoCorrente("Mario Rossi", 1000));
+			conti.add(new ContoRisparmio("Luisa Verdi", 2000));
+			conti.add(new ContoCorrente("Anna Bianchi", 1500));
+			conti.add(new ContoRisparmio("Giorgio Neri", 3000));
+
+			for (ContoBancario conto : conti) {
+				System.out.println(conto);
+			}
 		}
 
 		// 26. Gestione File Studenti (File I/O + ArrayList + Parsing)
 		// Leggi un file .txt contenente dati di studenti (nome, voto)
 		// Nel main, calcola la media voti e salva il risultato in un altro file.
 		public static void esercizio26() {
-			
+				List<StudenteDaFile> studenti = new ArrayList<>();
+				String inputFile = "src\\main\\java\\com\\example\\Esercizi\\ingsw\\esercizio26\\studenti.txt";
+				String outputFile = "src\\main\\java\\com\\example\\Esercizi\\ingsw\\esercizio26\\media.txt";
+
+				try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+					String riga;
+					while ((riga = br.readLine()) != null) {//legge riga per riga finchè ci sono righe da leggere
+						String[] parts = riga.split(",");//divide la riga
+						if (parts.length == 2) {
+							String nome = parts[0].trim();//prendo il nome
+							double voto = Double.parseDouble(parts[1].trim());//prendo il voto
+							studenti.add(new StudenteDaFile(nome, voto));//creo lo studente
+						}
+					}
+				} catch (IOException e) {
+					System.out.println("Errore nella lettura del file: " + e.getMessage());
+					return;
+				}
+
+				if (studenti.isEmpty()) {
+					System.out.println("Nessun dato letto.");
+					return;
+				}
+
+				double somma = 0;
+				for (StudenteDaFile s : studenti) {//per ogni nome calcola la somma dei voti
+					somma += s.getVoto();
+				}
+				double media = somma / studenti.size();//e la media
+
+				try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile))) {
+					bw.write("Media voti: " + media);
+					System.out.println("Media scritta su " + outputFile);
+				} catch (IOException e) {
+					System.out.println("Errore nella scrittura del file: " + e.getMessage());
+				}
 		}
+
 
 		// 27. Parser JSON Manuale (Stringhe + Logica + ArrayList)
 		// Nel main, ricevi da args una stringa stile JSON semplice ({"nome":"Luca", "eta":22})
 		// Parsa e crea un oggetto Persona, senza usare librerie esterne.
 		public static void esercizio27(String[] args) {
-			
-		}
+			if (args.length == 0) {
+            System.out.println("Fornire una stringa JSON negli args.");
+            return;
+        }
+
+			String json = args[0].trim();
+
+			// Rimozione delle parentesi graffe
+			if (json.startsWith("{") && json.endsWith("}")) {
+				json = json.substring(1, json.length() - 1);
+			} else {
+				System.out.println("Formato JSON non valido.");
+				return;
+			}
+
+			String[] coppie = json.split(",");
+
+			String nome = null;
+			int eta = -1;
+
+			for (String coppia : coppie) {
+				String[] keyValue = coppia.split(":");
+
+				if (keyValue.length != 2) continue;
+
+				String chiave = keyValue[0].replaceAll("\"", "").trim();
+				String valore = keyValue[1].replaceAll("\"", "").trim();
+
+				if (chiave.equals("nome")) {
+					nome = valore;
+				} else if (chiave.equals("eta")) {
+					try {
+						eta = Integer.parseInt(valore);
+					} catch (NumberFormatException e) {
+						System.out.println("Errore nel parsing dell'età.");
+						return;
+					}
+				}
+			}
+
+			if (nome != null && eta != -1) {
+				PersonaJson p = new PersonaJson(nome, eta);
+				System.out.println(p);
+			} else {
+				System.out.println("Chiavi 'nome' o 'eta' mancanti o non valide.");
+			}
+    	}
+		
 
 		// 28. Magazzino Multiclasse (ArrayList + Ereditarietà + instanceof)
 		// Crea Prodotto, e classi figlie Alimentare, Elettronico.
 		// Nel main, aggiungi vari prodotti e stampa solo quelli di un certo tipo.
 		public static void esercizio28() {
-			
+			ArrayList<ProdottoMagazzino> magazzino = new ArrayList<>();
+
+        magazzino.add(new Alimentare("Pasta", 1.5));
+        magazzino.add(new Elettronico("Mouse", 25.0));
+        magazzino.add(new Alimentare("Pane", 1.0));
+        magazzino.add(new Elettronico("TV", 299.99));
+
+        System.out.println("=== Prodotti Alimentari ===");
+        for (ProdottoMagazzino p : magazzino) {
+            if (p instanceof Alimentare) {
+                System.out.println(p);
+            }
+        }
+
+        System.out.println("\n=== Prodotti Elettronici ===");
+        for (ProdottoMagazzino p : magazzino) {
+            if (p instanceof Elettronico) {
+                System.out.println(p);
+            }
+        }
+    
 		}
 
 		// 29. Gestione Playlist (ArrayList + Oggetti + Metodi Statici)
 		// Classe Canzone con titolo, artista, durata.
 		// Nel main, crea una playlist e calcola la durata totale tramite metodo statico.
 		public static void esercizio29() {
-			
+				ArrayList<Canzone> playlist = new ArrayList<>();
+				playlist.add(new Canzone("Bohemian Rhapsody", "Queen", 354));
+				playlist.add(new Canzone("Imagine", "John Lennon", 183));
+				playlist.add(new Canzone("Smells Like Teen Spirit", "Nirvana", 301));
+
+				int durataTotale = Canzone.calcolaDurataTotale(playlist);
+				System.out.println("Durata totale playlist: " + durataTotale + " secondi");
 		}
 
 		// 30. Rubrica con Ricerca Avanzata (ArrayList + Stream-like)
 		// Classe Contatto con nome, numero, email.
 		// Nel main, implementa ricerche dinamiche per nome parziale o dominio email.
 		public static void esercizio30() {
-			
-		}
+				 ArrayList<Contatto> rubrica = new ArrayList<>();
+					rubrica.add(new Contatto("Mario Rossi", "3331234567", "mario.rossi@gmail.com"));
+					rubrica.add(new Contatto("Luca Verdi", "3347654321", "luca@libero.it"));
+					rubrica.add(new Contatto("Giulia Bianchi", "3359988776", "giulia.bianchi@yahoo.com"));
+
+					Scanner scanner = new Scanner(System.in);
+					System.out.print("Cerca per nome o dominio email: ");
+					String query = scanner.nextLine().toLowerCase();
+
+					System.out.println("Risultati della ricerca:");
+					for (Contatto c : rubrica) {
+						if (c.getNome().toLowerCase().contains(query) || c.getEmail().toLowerCase().endsWith(query)) {
+							System.out.println(c);
+						}
+					}
+					scanner.close();
+				}
+		
 
 		// 31. Sistema di Login (HashMap + Stringhe + Sicurezza base)
 		// Nel main, simula un sistema di login con utenti memorizzati in un HashMap<username, password>
 		// Verifica se le credenziali inserite da args sono corrette.
 		public static void esercizio31(String[] args) {
-			
-		}
+				if (args.length < 2) {
+					System.out.println("Uso: java Main <username> <password>");
+					return;
+				}
+
+				String inputUser = args[0];
+				String inputPass = args[1];
+
+				HashMap<String, String> utenti = new HashMap<>();
+				utenti.put("admin", "1234");
+				utenti.put("utente1", "password1");
+				utenti.put("utente2", "pass2024");
+
+				if (utenti.containsKey(inputUser) && utenti.get(inputUser).equals(inputPass)) {
+					System.out.println("Login riuscito!");
+				} else {
+					System.out.println("Credenziali non valide.");
+				}
+			}
+				
 
 		// 32. File Logger (FileWriter + Singleton + Data)
 		// Implementa un singleton Logger che scrive log su file con timestamp.
 		// Nel main, genera log da eventi diversi.
 		public static void esercizio32() {
-			
+				Logger logger = Logger.getInstance();
+				logger.log("Applicazione avviata.");
+				logger.log("Utente ha eseguito il login.");
+				logger.log("Operazione completata con successo.");
 		}
 
 		// 33. Parcheggio (OOP + Array + Occupazione posti)
 		// Classi Auto, PostoAuto, Parcheggio.
 		// Nel main, simula entrate/uscite e stampa lo stato del parcheggio.
 		public static void esercizio33() {
-			
+			Parcheggio parcheggio = new Parcheggio(5);
+
+			AutoEs33 a1 = new AutoEs33("AB123CD");
+			AutoEs33 a2 = new AutoEs33("EF456GH");
+			AutoEs33 a3 = new AutoEs33("IJ789KL");
+
+			parcheggio.entra(a1);
+			parcheggio.entra(a2);
+			parcheggio.entra(a3);
+
+			parcheggio.stampaStato();
+
+			System.out.println("Uscita auto EF456GH...");
+			parcheggio.esci("EF456GH");
+
+			parcheggio.stampaStato();
 		}
 
 		// 34. Classifica Mondiale (Ereditarietà + Comparable)
 		// Classe SquadraNazionale implementa Comparable per ordinamento per punti.
 		// Nel main, stampa la classifica ordinata.
 		public static void esercizio34() {
-			
-		}
+				ArrayList<SquadraNazionale> classifica = new ArrayList<>();
+				classifica.add(new SquadraNazionale("Italia", 12));
+				classifica.add(new SquadraNazionale("Brasile", 15));
+				classifica.add(new SquadraNazionale("Francia", 9));
+				classifica.add(new SquadraNazionale("Argentina", 18));
+
+				Collections.sort(classifica);
+
+				System.out.println("Classifica Mondiale:");
+				for (SquadraNazionale squadra : classifica) {
+					System.out.println(squadra);
+				}
+    	}
+		
 
 		// 35. Gioco dei Dadi (OOP + Random + Logica)
 		// Classe Giocatore con nome e punteggio.
 		// Nel main, due giocatori lanciano 3 dadi per turno. Vince chi ha punteggio più alto dopo 5 turni.
 		public static void esercizio35() {
-			
+					Giocatore g1 = new Giocatore("Giocatore1");
+        Giocatore g2 = new Giocatore("Giocatore2");
+        Random rand = new Random();
+
+        final int TURNI = 5;
+        final int DADI_PER_TURNO = 3;
+
+        for (int turno = 1; turno <= TURNI; turno++) {
+            int punteggioG1 = 0;
+            int punteggioG2 = 0;
+
+            for (int i = 0; i < DADI_PER_TURNO; i++) {
+                punteggioG1 += rand.nextInt(6) + 1;  // dado 1-6
+                punteggioG2 += rand.nextInt(6) + 1;
+            }
+
+            g1.aggiungiPunteggio(punteggioG1);
+            g2.aggiungiPunteggio(punteggioG2);
+
+            System.out.println("Turno " + turno + ":");
+            System.out.println(g1.getNome() + " ha totalizzato " + punteggioG1 + " punti (totale: " + g1.getPunteggio() + ")");
+            System.out.println(g2.getNome() + " ha totalizzato " + punteggioG2 + " punti (totale: " + g2.getPunteggio() + ")");
+            System.out.println();
+        }
+
+        if (g1.getPunteggio() > g2.getPunteggio()) {
+            System.out.println("Vince " + g1.getNome() + " con " + g1.getPunteggio() + " punti!");
+        } else if (g2.getPunteggio() > g1.getPunteggio()) {
+            System.out.println("Vince " + g2.getNome() + " con " + g2.getPunteggio() + " punti!");
+        } else {
+            System.out.println("Pareggio con " + g1.getPunteggio() + " punti ciascuno!");
+        }
 		}
 
 	public static void main(String[] args) {
@@ -534,7 +839,7 @@ public class EserciziIngswApplication {
 		//esercizio19(); // Interfaccia Pagabile
 		//esercizio20(); // Diario di Bordo
 		//esercizio21(); // Prenotazione Cinema
-		esercizio22(); // Gestione Ordini con Interfacce
+		//esercizio22(); // Gestione Ordini con Interfacce
 		//esercizio23(); // Registro Medico
 		//esercizio24(); // Catalogo con Filtri
 		//esercizio25(); // Sistema Banca
@@ -547,7 +852,7 @@ public class EserciziIngswApplication {
 		//esercizio32(); // File Logger
 		//esercizio33(); // Parcheggio
 		//esercizio34(); // Classifica Mondiale
-		//esercizio35(); // Gioco dei Dadi
+		esercizio35(); // Gioco dei Dadi
 	}
 
 }
